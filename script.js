@@ -107,39 +107,38 @@ if (shareBtn) {
             });
         }
 
-        // Tam Instagram Story Boyutu: 1080 x 1920 (9:16 Dikey)
+        // Genişliği 1600 yapıp dikey oranı koruyarak geniş bir tuval oluşturuyoruz (Tek satıra taşma yapmasın diye)
         var canvas = document.createElement("canvas");
-        canvas.width = 1080;
-        canvas.height = 1920;
+        canvas.width = 1600;
+        canvas.height = 2844; // Yaklaşık 9:16 oranı
         var ctx = canvas.getContext("2d");
 
-        // Arkaya tam boy beyaz tuval (story alanı) basılıyor
+        // Arka plan tam beyaz
         ctx.fillStyle = "#ffffff";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
         ctx.fillStyle = "#000000";
-        ctx.font = "bold 64px Montserrat, sans-serif";
+        // Tek satırın rahatça sığması için font boyutu ve genişlik optimize edildi
+        ctx.font = "bold 56px Montserrat, sans-serif";
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
 
         var tarihMetni = gun + " " + dil.gun + " " + saat + " " + dil.saat + " " + dakika + " " + dil.dakika + " " + saniye + " " + dil.saniye;
         
-        // Dikey tuvalin tam ortasında (veya hafif üst kısmında) şık durması için konumlar
-        ctx.fillText(tarihMetni, canvas.width / 2, canvas.height / 2 - 60);
+        // Dikey tuvalin ortasında tek satır olarak konumlandırma
+        ctx.fillText(tarihMetni, canvas.width / 2, canvas.height / 2 - 40);
 
-        ctx.font = "400 40px Montserrat, sans-serif";
+        ctx.font = "400 38px Montserrat, sans-serif";
         ctx.fillStyle = "#333333";
         ctx.fillText(dil.metin, canvas.width / 2, canvas.height / 2 + 50);
 
         var imageUrl = canvas.toDataURL("image/jpeg", 0.95);
 
-        // Instagram in-app browser tespiti
         var isInstagram = /Instagram/.test(navigator.userAgent);
 
         if (isInstagram) {
             gorselModalGoster(imageUrl);
         } else {
-            // Normal tarayıcılar (Safari, Chrome) için doğrudan indirme
             var link = document.createElement("a");
             link.download = "uzagiz-sayac.jpg";
             link.href = imageUrl;
@@ -172,7 +171,6 @@ function gorselModalGoster(imageUrl) {
 
     var img = document.createElement("img");
     img.src = imageUrl;
-    // Dikey story görseli modal içinde düzgün sığsın diye max-height ayarlandı
     img.style.cssText = "max-width:100%;max-height:60vh;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,0.5);object-fit:contain;margin-bottom:20px;-webkit-touch-callout:default !important;";
 
     var kapatBtn = document.createElement("button");
