@@ -21,7 +21,6 @@ setInterval(function() {
         saniye + " <i class='fa-solid fa-stopwatch'></i>"; 
 }, 1000);
 
-document.getElementById("shareBtn").getElementById = "shareBtn"; // correction point handled below in addEventListener
 document.getElementById("shareBtn").addEventListener("click", function() {
     var gun = Math.floor((new Date().getTime() - baslangic) / (1000 * 60 * 60 * 24));
     var saat = Math.floor(((new Date().getTime() - baslangic) % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
@@ -38,9 +37,8 @@ document.getElementById("shareBtn").addEventListener("click", function() {
     
     try {
         document.execCommand('copy');
-    } catch (err) {
-        // Sessizce geçer
-    }
+        document.getElementById("copyMessage").style.display = "block";
+    } catch (err) {}
     
     document.body.removeChild(textarea);
 });
