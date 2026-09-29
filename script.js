@@ -99,25 +99,38 @@ document.getElementById("shareBtn").addEventListener("click", function() {
         navigator.clipboard.writeText(paylasimMetni);
     }
 
-    var captureElement = document.getElementById("captureArea");
-    
-    html2canvas(captureElement, { 
-        backgroundColor: "#ffffff", 
-        scale: 3,
-        windowWidth: document.documentElement.clientWidth,
-        logging: false
-    }).then(function(canvas) {
-        var link = document.createElement("a");
-        link.download = "uzagiz-sayac.jpg";
-        link.href = canvas.toDataURL("image/jpeg", 0.95);
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
+    var canvas = document.createElement("canvas");
+    canvas.width = 1200;
+    canvas.height = 800;
+    var ctx = canvas.getContext("2d");
 
-        var ikon = document.getElementById("shareIcon");
-        ikon.className = "fa-solid fa-check";
-        setTimeout(function() {
-            ikon.className = "fa-solid fa-share-nodes";
-        }, 2000);
-    });
+    ctx.fillStyle = "#ffffff";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    ctx.fillStyle = "#000000";
+    ctx.font = "bold 64px Montserrat, sans-serif";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+
+    var tarihMetni = gun + " " + dil.gun + " " + saat + " " + dil.saat + " " + dakika + " " + dil.dakika + " " + saniye + " " + dil.saniye;
+    ctx.fillText(tarihMetni, canvas.width / 2, canvas.height / 2 - 40);
+
+    ctx.font = "400 40px Montserrat, sans-serif";
+    ctx.fillStyle = "#333333";
+    ctx.fillText(dil.metin, canvas.width / 2, canvas.height / 2 + 50);
+
+    var imageUrl = canvas.toDataURL("image/jpeg", 0.95);
+
+    var link = document.createElement("a");
+    link.download = "uzagiz-sayac.jpg";
+    link.href = imageUrl;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    var ikon = document.getElementById("shareIcon");
+    ikon.className = "fa-solid fa-check";
+    setTimeout(function() {
+        ikon.className = "fa-solid fa-share-nodes";
+    }, 2000);
 });
