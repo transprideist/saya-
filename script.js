@@ -115,13 +115,13 @@ if (shareBtn) {
             });
         }
 
-        // Tam Dikey Story Boyutu (1080x1920)
+    
         var canvas = document.createElement("canvas");
         canvas.width = 1080;
         canvas.height = 1920;
         var ctx = canvas.getContext("2d");
 
-        // Arka planı bembeyaz yapıyoruz
+        
         ctx.fillStyle = "#ffffff";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -130,18 +130,16 @@ if (shareBtn) {
 
         var tarihMetni = gun + " " + dil.gun + " " + saat + " " + dil.saat + " " + dakika + " " + dil.dakika + " " + saniye + " " + dil.saniye;
 
-        // Metin uzunluğuna göre dinamik font boyutu
         var fontSize = 42;
         if (tarihMetni.length > 30) {
             fontSize = 36;
         }
 
-        // 1. Satır: Sayaç Rakamları
         ctx.fillStyle = "#000000";
         ctx.font = "bold " + fontSize + "px Montserrat, sans-serif";
         ctx.fillText(tarihMetni, canvas.width / 2, canvas.height / 2 - 40);
 
-        // 2. Satır: Açıklama Metni
+    
         ctx.font = "400 32px Montserrat, sans-serif";
         ctx.fillStyle = "#333333";
         ctx.fillText(dil.metin, canvas.width / 2, canvas.height / 2 + 50);
