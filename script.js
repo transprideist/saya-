@@ -127,22 +127,37 @@ if (shareBtn) {
         ctx.fillStyle = "#333333";
         ctx.fillText(dil.metin, canvas.width / 2, canvas.height / 2 + 50);
 
-        var imageUrl = canvas.toDataURL("image/jpeg", 0.95);
+        // Canvas'ı Blob formatına çevirip hem yerel paylaşım hem indirme için hazırlıyoruz
+        canvas.toBlob(function(blob) {
+            var file = new File([blob], "uzagiz-sayac.jpg", { type: "image/jpeg" });
+            var isInstagram = /Instagram/.test(navigator.userAgent);
 
-        // Instagram in-app browser kontrolü
-        var isInstagram = /Instagram/.test(navigator.userAgent);
-
-        if (isInstagram) {
-            gorselModalGoster(imageUrl, dil);
-        } else {
-            // Normal tarayıcılar (Safari, Chrome vb.) için doğrudan indirme akışı
-            var link = document.createElement("a");
-            link.download = "uzagiz-sayac.jpg";
-            link.href = imageUrl;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        }
+            // 1. Önce modern cihazlarda ve destekleyen tarayıcılarda (Instagram dahil) yerel paylaşım menüsünü deneriz
+            if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                navigator.share({
+                    files: [file],
+                    text: paylasimMetni,
+                    title: "Sayaç"
+                }).catch(function(error) {
+                    console.log("Paylaşım iptal edildi veya hata:", error);
+                });
+            } 
+            // 2. Eğer Instagram in-app browser yerel paylaşımı desteklemiyorsa, açıklayıcı butonlu modalı açarız
+            else if (isInstagram) {
+                var imageUrl = canvas.toDataURL("image/jpeg", 0.95);
+                gorselModalGoster(imageUrl, paylasimMetni);
+            } 
+            // 3. Normal tarayıcılar (Safari, Chrome) için doğrudan indirme
+            else {
+                var imageUrl = canvas.toDataURL("image/jpeg", 0.95);
+                var link = document.createElement("a");
+                link.download = "uzagiz-sayac.jpg";
+                link.href = imageUrl;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+        }, "image/jpeg", 0.95);
 
         var ikon = document.getElementById("shareIcon");
         if (ikon) {
@@ -154,32 +169,45 @@ if (shareBtn) {
     });
 }
 
-function gorselModalGoster(imageUrl, dil) {
+function gorselModalGoster(imageUrl, paylasimMetni) {
     var eskiModal = document.getElementById("igModal");
     if (eskiModal) eskiModal.remove();
 
     var modal = document.createElement("div");
     modal.id = "igModal";
-    modal.style.cssText = "position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;box-sizing:border-box;";
+    modal.style.cssText = "position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.92);z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;box-sizing:border-box;";
+
+    var baslik = document.createElement("h3");
+    baslik.style.cssText = "color:#ffffff;font-family:Montserrat,sans-serif;font-size:18px;margin-bottom:8px;text-align:center;";
+    baslik.innerText = "Görseliniz Hazır!";
 
     var aciklama = document.createElement("p");
-    aciklama.style.cssText = "color:#ffffff;font-family:Montserrat,sans-serif;font-size:15px;text-align:center;margin-bottom:15px;line-height:1.4;max-width:320px;";
-    aciklama.innerText = "Görseli kaydetmek için üzerine basılı tutun ve 'Resmi Kaydet' / 'Fotoğraflara Ekle' seçeneğini seçin.";
+    aciklama.style.cssText = "color:#cccccc;font-family:Montserrat,sans-serif;font-size:13px;text-align:center;margin-bottom:15px;line-height:1.4;max-width:320px;";
+    aciklama.innerText = "Instagram kısıtlaması nedeniyle resmi doğrudan indiremiyoruz. Kaydetmek için aşağıdaki butona basıp açılan sayfada görseli basılı tutabilir veya fotoğraflarınıza kaydedebilirsiniz.";
 
     var img = document.createElement("img");
     img.src = imageUrl;
-    img.style.cssText = "max-width:100%;max-height:65vh;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,0.5);object-fit:contain;";
+    img.style.cssText = "max-width:100%;max-height:45vh;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,0.5);object-fit:contain;margin-bottom:15px;";
+
+    var kaydetBtn = document.createElement("a");
+    kaydetBtn.innerText = "📲 Görseli Yeni Sekmede Aç / Kaydet";
+    kaydetBtn.href = imageUrl;
+    kaydetBtn.target = "_blank";
+    kaydetBtn.rel = "noopener";
+    kaydetBtn.style.cssText = "display:block;width:80%;max-width:280px;padding:12px 16px;background:#0095f6;color:#ffffff;text-decoration:none;border-radius:30px;font-weight:bold;font-size:14px;font-family:Montserrat,sans-serif;text-align:center;margin-bottom:10px;box-shadow:0 4px 12px rgba(0,149,246,0.4);";
 
     var kapatBtn = document.createElement("button");
-    kapatBtn.innerText = "✕ Kapat";
-    kapatBtn.style.cssText = "margin-top:20px;padding:12px 28px;background:#ffffff;color:#000000;border:none;border-radius:30px;font-weight:bold;font-size:16px;font-family:Montserrat,sans-serif;cursor:pointer;";
+    kapatBtn.innerText = "Kapat";
+    kapatBtn.style.cssText = "padding:8px 20px;background:transparent;color:#aaaaaa;border:none;font-size:14px;font-family:Montserrat,sans-serif;cursor:pointer;";
     
     kapatBtn.onclick = function() {
         modal.remove();
     };
 
+    modal.appendChild(baslik);
     modal.appendChild(aciklama);
     modal.appendChild(img);
+    modal.appendChild(kaydetBtn);
     modal.appendChild(kapatBtn);
     document.body.appendChild(modal);
 }
