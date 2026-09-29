@@ -1,5 +1,5 @@
 // Başlangıç tarihi: 12 Eylül 2026, 00:00:00
-var baslangic = new Date("2026-09-12T00:00:00").getTime();
+var baslangic = new Date("2026-09-13T03:00:00").getTime();
 
 setInterval(function() {
     var simdi = new Date().getTime();
