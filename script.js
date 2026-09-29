@@ -8,7 +8,7 @@ var diller = {
         saniye: "SANİYE",
         metin: "ARKADAŞLARIMIZDAN UZAĞIZ",
         ek: "SANİYEDİR ARKADAŞLARIMIZDAN UZAĞIZ!",
-        modalAciklama: "Görselin üzerine uzun basılı tutup fotoğraflarına kaydedebilir ve Instagram hikayende paylaşabilirsin! (Paylaşım metni panoya kopyalandı ✨)",
+        modalAciklama: "Görselin üzerine uzun basılı tutup fotoğraflarına kaydedebilir ve Instagram hikayende paylaşabilirsin! (Paylaşım metni panoya kopyalandı)",
         kapatBtn: "Tamam / Kapat"
     },
     en: {
@@ -18,7 +18,7 @@ var diller = {
         saniye: "SECONDS",
         metin: "AWAY FROM OUR FRIENDS",
         ek: "SECONDS AWAY FROM OUR FRIENDS!",
-        modalAciklama: "Press and hold the image to save it to your photos and share it on your Instagram story! (Share text copied to clipboard ✨)",
+        modalAciklama: "Press and hold the image to save it to your photos and share it on your Instagram story! (Share text copied to clipboard)",
         kapatBtn: "Done / Close"
     },
     ku: {
@@ -28,7 +28,7 @@ var diller = {
         saniye: "ÇIRKE",
         metin: "EM JI HEVALÊN XWE DÛR IN",
         ek: "ÇIRKE EM JI HEVALÊN XWE DÛR IN!",
-        modalAciklama: "Ji bo wêne tomar bikin li ser wê bitikînin û li çîroka xwe ya Instagramê parve bikin! (Nivîsa parvekirinê hate kopîkirin ✨)",
+        modalAciklama: "Ji bo wêne tomar bikin li ser wê bitikînin û li çîroka xwe ya Instagramê parve bikin! (Nivîsa parvekirinê hate kopîkirin)",
         kapatBtn: "Temam / Bigire"
     },
     ar: {
@@ -38,7 +38,7 @@ var diller = {
         saniye: "ثانية",
         metin: "بعيدون عن أصدقائنا",
         ek: "ثانية بعيدون عن أصدقائنا!",
-        modalAciklama: "اضغط مطولاً على الصورة لحفظها في صورك ومشاركتها في قصتك على إنستغرام! (تم نسخ نص المشاركة ✨)",
+        modalAciklama: "اضغط مطولاً على الصورة لحفظها في صورك ومشاركتها في قصتك على إنستغرام! (تم نسخ نص المشاركة)",
         kapatBtn: "تم / إغلاق"
     }
 };
@@ -130,7 +130,7 @@ if (shareBtn) {
 
         var tarihMetni = gun + " " + dil.gun + " " + saat + " " + dil.saat + " " + dakika + " " + dil.dakika + " " + saniye + " " + dil.saniye;
 
-        // Metin uzunluğuna göre dinamik font boyutu (taşmayı önlemek için)
+        // Metin uzunluğuna göre dinamik font boyutu
         var fontSize = 42;
         if (tarihMetni.length > 30) {
             fontSize = 36;
@@ -181,14 +181,14 @@ function gorselModalGoster(imageUrl, dil) {
 
     var aciklama = document.createElement("p");
     aciklama.style.cssText = "color:#ffffff;font-family:Montserrat,sans-serif;font-size:14px;text-align:center;margin-bottom:15px;line-height:1.5;max-width:320px;";
-    aciklama.innerText = dil.modalAciklama; // Aktif dildeki açıklama yazısı
+    aciklama.innerText = dil.modalAciklama;
 
     var img = document.createElement("img");
     img.src = imageUrl;
     img.style.cssText = "max-width:100%;max-height:60vh;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,0.5);object-fit:contain;margin-bottom:20px;-webkit-touch-callout:default !important;";
 
     var kapatBtn = document.createElement("button");
-    kapatBtn.innerText = dil.kapatBtn; // Aktif dildeki kapat butonu
+    kapatBtn.innerText = dil.kapatBtn;
     kapatBtn.style.cssText = "padding:12px 28px;background:#ffffff;color:#000000;border:none;border-radius:30px;font-weight:bold;font-size:15px;font-family:Montserrat,sans-serif;cursor:pointer;";
     
     kapatBtn.onclick = function() {
