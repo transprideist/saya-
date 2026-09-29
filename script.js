@@ -95,18 +95,15 @@ document.getElementById("shareBtn").addEventListener("click", function() {
 
     var paylasimMetni = gun + " " + dil.gun + " " + saat + " " + dil.saat + " " + dakika + " " + dil.dakika + " " + saniye + " " + dil.ek + "\ntransprideistanbul.com/sayac/#" + hash;
 
-    // Metni panoya kopyala
     if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(paylasimMetni);
     }
 
-    // Sayaç alanının ekran görüntüsünü (canvas) alıp paylaşmayı dene
     var captureElement = document.getElementById("captureArea");
-    html2canvas(captureElement, { backgroundColor: null, scale: 2 }).then(function(canvas) {
+    html2canvas(captureElement, { backgroundColor: "#ffffff", scale: 2 }).then(function(canvas) {
         canvas.toBlob(function(blob) {
-            var file = new File([blob], "uzagiz-sayac.png", { type: "image/png" });
+            var file = new File([blob], "uzagiz-sayac.jpg", { type: "image/jpeg" });
 
-            // Tarayıcı destekliyorsa doğrudan native paylaşım menüsünü (Instagram Story, WhatsApp vb.) tetikle
             if (navigator.canShare && navigator.canShare({ files: [file] })) {
                 navigator.share({
                     files: [file],
@@ -114,19 +111,17 @@ document.getElementById("shareBtn").addEventListener("click", function() {
                     text: paylasimMetni
                 }).catch(function() {});
             } else {
-                // Desteklemiyorsa görseli kullanıcıya direkt indir
                 var link = document.createElement("a");
-                link.download = "uzagiz-sayac.png";
-                link.href = canvas.toDataURL("image/png");
+                link.download = "uzagiz-sayac.jpg";
+                link.href = canvas.toDataURL("image/jpeg", 0.9);
                 link.click();
             }
 
-            // İkonu tik işaretine çevir
             var ikon = document.getElementById("shareIcon");
             ikon.className = "fa-solid fa-check";
             setTimeout(function() {
                 ikon.className = "fa-solid fa-share-nodes";
             }, 2000);
-        });
+        }, "image/jpeg", 0.9);
     });
 });
