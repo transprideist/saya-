@@ -25,13 +25,61 @@ body {
     font-size: clamp(20px, 4vw, 32px);
     font-weight: 700;
     letter-spacing: 2px;
-    margin-bottom: 24px;
+    margin-bottom: 16px;
     word-break: break-word;
 }
 
+#tarih i {
+    font-size: 0.85em;
+    margin-left: 2px;
+    margin-right: 8px;
+    color: #333333;
+}
+
 .subheader {
-    font-size: clamp(14px, 2vw, 24px);
+    font-size: clamp(14px, 2vw, 20px);
     font-weight: 400;
     letter-spacing: 1.5px;
     color: #333333;
+    margin-bottom: 6px;
+}
+
+.subheader-en {
+    font-size: clamp(12px, 1.8vw, 18px);
+    font-weight: 400;
+    letter-spacing: 1.5px;
+    color: #666666;
+    margin-bottom: 6px;
+}
+
+.subheader-ar {
+    font-size: clamp(12px, 1.8vw, 18px);
+    font-weight: 400;
+    letter-spacing: 1.5px;
+    color: #666666;
+}
+
+.share-btn {
+    margin-top: 30px;
+    background-color: #000000;
+    color: #ffffff;
+    border: none;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.share-btn i {
+    font-size: 22px;
+    margin: 0;
+}
+
+.share-btn:hover {
+    background-color: #333333;
+    transform: scale(1.05);
 }
