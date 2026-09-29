@@ -101,6 +101,8 @@ document.getElementById("shareBtn").addEventListener("click", function() {
 
     var captureElement = document.getElementById("captureArea");
     html2canvas(captureElement, { backgroundColor: "#ffffff", scale: 2 }).then(function(canvas) {
+        var imageUrl = canvas.toDataURL("image/jpeg", 0.9);
+
         canvas.toBlob(function(blob) {
             var file = new File([blob], "uzagiz-sayac.jpg", { type: "image/jpeg" });
 
@@ -109,12 +111,11 @@ document.getElementById("shareBtn").addEventListener("click", function() {
                     files: [file],
                     title: 'Sayaç',
                     text: paylasimMetni
-                }).catch(function() {});
+                }).catch(function() {
+                    dosyayiIndir(imageUrl);
+                });
             } else {
-                var link = document.createElement("a");
-                link.download = "uzagiz-sayac.jpg";
-                link.href = canvas.toDataURL("image/jpeg", 0.9);
-                link.click();
+                dosyayiIndir(imageUrl);
             }
 
             var ikon = document.getElementById("shareIcon");
@@ -125,3 +126,12 @@ document.getElementById("shareBtn").addEventListener("click", function() {
         }, "image/jpeg", 0.9);
     });
 });
+
+function dosyayiIndir(dataUrl) {
+    var link = document.createElement("a");
+    link.href = dataUrl;
+    link.download = "uzagiz-sayac.jpg";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
