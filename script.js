@@ -30,21 +30,14 @@ document.getElementById("shareBtn").addEventListener("click", function() {
     var temizMetin = gun + " GÜN " + saat + " SAAT " + dakika + " DAKİKA " + saniye + " SANİYEDİR";
     var paylasimMetni = temizMetin + " UZAĞIZ! / AWAY FROM OUR FRIENDS! / بعيدون عن أصدقائنا\ntransprideistanbul.com/sayac";
 
-    var textarea = document.createElement("textarea");
-    textarea.value = paylasimMetni;
-    document.body.appendChild(textarea);
-    textarea.select();
-    document.execCommand('copy');
-    document.body.removeChild(textarea);
-
     if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(paylasimMetni);
+        navigator.clipboard.writeText(paylasimMetni).then(function() {
+            var ikon = document.getElementById("shareIcon");
+            ikon.className = "fa-solid fa-check";
+
+            setTimeout(function() {
+                ikon.className = "fa-solid fa-share-nodes";
+            }, 2000);
+        });
     }
-
-    var ikon = document.getElementById("shareIcon");
-    ikon.className = "fa-solid fa-check";
-
-    setTimeout(function() {
-        ikon.className = "fa-solid fa-share-nodes";
-    }, 2000);
 });
