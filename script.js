@@ -104,26 +104,22 @@ document.getElementById("shareBtn").addEventListener("click", function() {
     html2canvas(captureElement, { 
         backgroundColor: "#ffffff", 
         scale: 3,
-        windowWidth: 600,
-        scrollY: -window.scrollY
+        logging: false
     }).then(function(canvas) {
         var imageUrl = canvas.toDataURL("image/jpeg", 0.95);
 
         canvas.toBlob(function(blob) {
             var file = new File([blob], "uzagiz-sayac.jpg", { type: "image/jpeg" });
 
-            // Önce native share'i dener (destekleyen cihazlarda doğrudan açar)
             if (navigator.canShare && navigator.canShare({ files: [file] })) {
                 navigator.share({
                     files: [file],
                     title: 'Sayaç',
                     text: paylasimMetni
                 }).catch(function() {
-                    // İptal ederse veya hata verirse Instagram dostu yeni sekme önizlemesine atar
                     gorseliAc(imageUrl);
                 });
             } else {
-                // Instagram in-app browser gibi doğrudan indirmeyi engelleyen yerlerde burası çalışır
                 gorseliAc(imageUrl);
             }
 
@@ -139,7 +135,7 @@ document.getElementById("shareBtn").addEventListener("click", function() {
 function gorseliAc(dataUrl) {
     var yeniSekme = window.open();
     if (yeniSekme) {
-        yeniSekme.document.write('<!DOCTYPE html><html><head><title>Sayaç Görseli</title><meta name="viewport" content="width=device-width, initial-scale=1.0"></head><body style="margin:0; background:#000; display:flex; justify-content:center; align-items:center; height:100vh;"><img src="' + dataUrl + '" style="width:100%; height:auto; display:block;" alt="Sayaç"/></body></html>');
+        yeniSekme.document.write('<!DOCTYPE html><html><head><title>Sayaç Görseli</title><meta name="viewport" content="width=device-width, initial-scale=1.0"></head><body style="margin:0; background:#ffffff; display:flex; justify-content:center; align-items:center; height:100vh;"><img src="' + dataUrl + '" style="max-width:100%; height:auto; display:block;" alt="Sayaç"/></body></html>');
     } else {
         window.location.href = dataUrl;
     }
