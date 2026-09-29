@@ -108,35 +108,24 @@ document.getElementById("shareBtn").addEventListener("click", function() {
     }).then(function(canvas) {
         var imageUrl = canvas.toDataURL("image/jpeg", 0.95);
 
-        canvas.toBlob(function(blob) {
-            var file = new File([blob], "uzagiz-sayac.jpg", { type: "image/jpeg" });
+        var link = document.createElement("a");
+        link.download = "uzagiz-sayac.jpg";
+        link.href = imageUrl;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
 
-            if (navigator.canShare && navigator.canShare({ files: [file] })) {
-                navigator.share({
-                    files: [file],
-                    title: 'Sayaç',
-                    text: paylasimMetni
-                }).catch(function() {
-                    gorseliAc(imageUrl);
-                });
-            } else {
-                gorseliAc(imageUrl);
+        setTimeout(function() {
+            var yeniSekme = window.open();
+            if (yeniSekme) {
+                yeniSekme.document.write('<!DOCTYPE html><html><head><title>Sayaç Görseli</title><meta name="viewport" content="width=device-width, initial-scale=1.0"></head><body style="margin:0; background:#ffffff; display:flex; justify-content:center; align-items:center; height:100vh;"><img src="' + imageUrl + '" style="max-width:100%; height:auto; display:block;" alt="Sayaç"/></body></html>');
             }
+        }, 300);
 
-            var ikon = document.getElementById("shareIcon");
-            ikon.className = "fa-solid fa-check";
-            setTimeout(function() {
-                ikon.className = "fa-solid fa-share-nodes";
-            }, 2000);
-        }, "image/jpeg", 0.95);
+        var ikon = document.getElementById("shareIcon");
+        ikon.className = "fa-solid fa-check";
+        setTimeout(function() {
+            ikon.className = "fa-solid fa-share-nodes";
+        }, 2000);
     });
 });
-
-function gorseliAc(dataUrl) {
-    var yeniSekme = window.open();
-    if (yeniSekme) {
-        yeniSekme.document.write('<!DOCTYPE html><html><head><title>Sayaç Görseli</title><meta name="viewport" content="width=device-width, initial-scale=1.0"></head><body style="margin:0; background:#ffffff; display:flex; justify-content:center; align-items:center; height:100vh;"><img src="' + dataUrl + '" style="max-width:100%; height:auto; display:block;" alt="Sayaç"/></body></html>');
-    } else {
-        window.location.href = dataUrl;
-    }
-}
