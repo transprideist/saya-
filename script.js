@@ -107,11 +107,13 @@ if (shareBtn) {
             });
         }
 
+        // Tam Instagram Story Boyutu: 1080 x 1920 (9:16 Dikey)
         var canvas = document.createElement("canvas");
-        canvas.width = 1200;
-        canvas.height = 800;
+        canvas.width = 1080;
+        canvas.height = 1920;
         var ctx = canvas.getContext("2d");
 
+        // Arkaya tam boy beyaz tuval (story alanı) basılıyor
         ctx.fillStyle = "#ffffff";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -121,7 +123,9 @@ if (shareBtn) {
         ctx.textBaseline = "middle";
 
         var tarihMetni = gun + " " + dil.gun + " " + saat + " " + dil.saat + " " + dakika + " " + dil.dakika + " " + saniye + " " + dil.saniye;
-        ctx.fillText(tarihMetni, canvas.width / 2, canvas.height / 2 - 40);
+        
+        // Dikey tuvalin tam ortasında (veya hafif üst kısmında) şık durması için konumlar
+        ctx.fillText(tarihMetni, canvas.width / 2, canvas.height / 2 - 60);
 
         ctx.font = "400 40px Montserrat, sans-serif";
         ctx.fillStyle = "#333333";
@@ -133,10 +137,9 @@ if (shareBtn) {
         var isInstagram = /Instagram/.test(navigator.userAgent);
 
         if (isInstagram) {
-            // Instagram'daysa kullanıcıyı bilgilendiren modalı aç
             gorselModalGoster(imageUrl);
         } else {
-            // Normal tarayıcılar (Safari, Chrome vb.) için doğrudan indirme akışı
+            // Normal tarayıcılar (Safari, Chrome) için doğrudan indirme
             var link = document.createElement("a");
             link.download = "uzagiz-sayac.jpg";
             link.href = imageUrl;
@@ -169,7 +172,8 @@ function gorselModalGoster(imageUrl) {
 
     var img = document.createElement("img");
     img.src = imageUrl;
-    img.style.cssText = "max-width:100%;max-height:55vh;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,0.5);object-fit:contain;margin-bottom:20px;-webkit-touch-callout:default !important;";
+    // Dikey story görseli modal içinde düzgün sığsın diye max-height ayarlandı
+    img.style.cssText = "max-width:100%;max-height:60vh;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,0.5);object-fit:contain;margin-bottom:20px;-webkit-touch-callout:default !important;";
 
     var kapatBtn = document.createElement("button");
     kapatBtn.innerText = "Tamam / Kapat";
