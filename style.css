@@ -7,33 +7,99 @@ body {
     padding: 20px;
     background-color: transparent;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
+    font-family: 'Montserrat', sans-serif;
+}
+
+/* Dil Seçim Ekranı Stili */
+.lang-select-screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.lang-title {
+    font-size: clamp(12px, 1.8vw, 16px);
+    font-weight: 600;
+    letter-spacing: 2px;
+    color: #333333;
+    margin-bottom: 25px;
+    text-transform: uppercase;
+}
+
+.lang-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 200px;
+}
+
+.lang-grid a {
+    display: block;
+    padding: 12px;
+    background-color: #000000;
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+    letter-spacing: 1.5px;
+    border-radius: 6px;
+    text-transform: uppercase;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.lang-grid a:hover {
+    background-color: #333333;
+    transform: scale(1.02);
+}
+
+/* Sayaç Ekranı Stili */
+.counter-screen {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.lang-nav {
+    position: absolute;
+    top: 25px;
+    display: flex;
+    gap: 15px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.lang-nav a {
+    color: #666666;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.lang-nav a:hover {
+    color: #000000;
 }
 
 .container {
     width: 100%;
     max-width: 100%;
     text-align: center;
-    font-family: 'Montserrat', sans-serif;
     color: #000000;
     text-transform: uppercase;
 }
 
 #tarih {
-    font-size: clamp(20px, 4vw, 32px);
+    font-size: clamp(16px, 3.2vw, 26px);
     font-weight: 700;
-    letter-spacing: 2px;
+    letter-spacing: 1.5px;
     margin-bottom: 16px;
     word-break: break-word;
-}
-
-#tarih i {
-    font-size: 0.85em;
-    margin-left: 2px;
-    margin-right: 8px;
-    color: #333333;
 }
 
 .subheader {
@@ -42,21 +108,6 @@ body {
     letter-spacing: 1.5px;
     color: #333333;
     margin-bottom: 6px;
-}
-
-.subheader-en {
-    font-size: clamp(12px, 1.8vw, 18px);
-    font-weight: 400;
-    letter-spacing: 1.5px;
-    color: #666666;
-    margin-bottom: 6px;
-}
-
-.subheader-ar {
-    font-size: clamp(12px, 1.8vw, 18px);
-    font-weight: 400;
-    letter-spacing: 1.5px;
-    color: #666666;
 }
 
 .share-btn {
@@ -78,18 +129,4 @@ body {
 .share-btn:hover {
     background-color: #333333;
     transform: scale(1.05);
-}
-
-.copy-message {
-    opacity: 0;
-    margin-top: 15px;
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 1.5px;
-    color: #333333;
-    transition: opacity 0.3s ease;
-}
-
-.copy-message.aktif {
-    opacity: 1;
 }
