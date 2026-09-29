@@ -87,9 +87,9 @@ body {
     font-weight: 600;
     letter-spacing: 1.5px;
     color: #333333;
-    transition: opacity 0.4s ease;
+    transition: opacity 0.3s ease;
 }
 
-.copy-message.goster {
+.share-btn:active ~ .copy-message {
     opacity: 1;
 }
