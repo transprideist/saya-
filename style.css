@@ -90,6 +90,6 @@ body {
     transition: opacity 0.3s ease;
 }
 
-.share-btn:active ~ .copy-message {
+.copy-message.aktif {
     opacity: 1;
 }
