@@ -7,9 +7,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="./style.css">
+    <!-- Sayfa görüntüsünü almak için html2canvas kütüphanesi -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   </head>
   <body>
-    <!-- 1. DİL SEÇİM EKRANI (Başlangıçta sadece bu görünür) -->
+    <!-- 1. DİL SEÇİM EKRANI -->
     <div id="langSelectScreen" class="lang-select-screen">
         <div class="lang-dots">
             <a href="#tr">TR</a>
@@ -22,7 +24,7 @@
         </div>
     </div>
 
-    <!-- 2. SAYAÇ EKRANI (Dil seçilince hash ile bu açılır) -->
+    <!-- 2. SAYAÇ EKRANI -->
     <div id="counterScreen" class="counter-screen" style="display: none;">
         <div class="lang-nav">
             <a href="#tr">TR</a>
@@ -33,13 +35,14 @@
             <span>•</span>
             <a href="#ar">AR</a>
         </div>
-        <div class="container">
+        <!-- Görseli yakalayacağımız ana alan (container) -->
+        <div id="captureArea" class="container">
             <div id="tarih">Yükleniyor..</div>
             <div id="subheader" class="subheader"></div>
-            <button id="shareBtn" class="share-btn" aria-label="Paylaş">
-                <i id="shareIcon" class="fa-solid fa-share-nodes"></i>
-            </button>
         </div>
+        <button id="shareBtn" class="share-btn" aria-label="Paylaş">
+            <i id="shareIcon" class="fa-solid fa-share-nodes"></i>
+        </button>
     </div>
 
     <script src="./script.js"></script>
