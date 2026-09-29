@@ -104,6 +104,7 @@ document.getElementById("shareBtn").addEventListener("click", function() {
     html2canvas(captureElement, { 
         backgroundColor: "#ffffff", 
         scale: 3,
+        windowWidth: document.documentElement.clientWidth,
         logging: false
     }).then(function(canvas) {
         var link = document.createElement("a");
@@ -120,4 +121,3 @@ document.getElementById("shareBtn").addEventListener("click", function() {
         }, 2000);
     });
 });
-
