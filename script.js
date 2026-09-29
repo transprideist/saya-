@@ -21,6 +21,7 @@ setInterval(function() {
         saniye + " <i class='fa-solid fa-stopwatch'></i>"; 
 }, 1000);
 
+document.getElementById("shareBtn").getElementById = "shareBtn"; // correction point handled below in addEventListener
 document.getElementById("shareBtn").addEventListener("click", function() {
     var gun = Math.floor((new Date().getTime() - baslangic) / (1000 * 60 * 60 * 24));
     var saat = Math.floor(((new Date().getTime() - baslangic) % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
@@ -30,7 +31,6 @@ document.getElementById("shareBtn").addEventListener("click", function() {
     var temizMetin = gun + " GÜN " + saat + " SAAT " + dakika + " DAKİKA " + saniye + " SANİYEDİR";
     var paylasimMetni = temizMetin + " UZAĞIZ! / AWAY FROM OUR FRIENDS! / بعيدون عن أصدقائنا\ntransprideistanbul.com/sayac";
 
-    // Tarayıcı engeline takılmayan klasik ve en sağlam kopyalama yöntemi
     var textarea = document.createElement("textarea");
     textarea.value = paylasimMetni;
     document.body.appendChild(textarea);
@@ -38,9 +38,8 @@ document.getElementById("shareBtn").addEventListener("click", function() {
     
     try {
         document.execCommand('copy');
-        alert("Sayaç kopyalandı! Instagram hikayene yapıştırabilirsin. 🏳️‍⚧️");
     } catch (err) {
-        alert("Kopyalanamadı, lütfen tekrar dene.");
+        // Sessizce geçer
     }
     
     document.body.removeChild(textarea);
