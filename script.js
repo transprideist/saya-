@@ -106,21 +106,12 @@ document.getElementById("shareBtn").addEventListener("click", function() {
         scale: 3,
         logging: false
     }).then(function(canvas) {
-        var imageUrl = canvas.toDataURL("image/jpeg", 0.95);
-
         var link = document.createElement("a");
         link.download = "uzagiz-sayac.jpg";
-        link.href = imageUrl;
+        link.href = canvas.toDataURL("image/jpeg", 0.95);
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
-
-        setTimeout(function() {
-            var yeniSekme = window.open();
-            if (yeniSekme) {
-                yeniSekme.document.write('<!DOCTYPE html><html><head><title>Sayaç Görseli</title><meta name="viewport" content="width=device-width, initial-scale=1.0"></head><body style="margin:0; background:#ffffff; display:flex; justify-content:center; align-items:center; height:100vh;"><img src="' + imageUrl + '" style="max-width:100%; height:auto; display:block;" alt="Sayaç"/></body></html>');
-            }
-        }, 300);
 
         var ikon = document.getElementById("shareIcon");
         ikon.className = "fa-solid fa-check";
@@ -129,3 +120,4 @@ document.getElementById("shareBtn").addEventListener("click", function() {
         }, 2000);
     });
 });
+
