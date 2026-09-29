@@ -41,5 +41,10 @@ document.getElementById("shareBtn").addEventListener("click", function() {
         navigator.clipboard.writeText(paylasimMetni);
     }
 
-    document.querySelector(".copy-message").style.opacity = "1";
+    var ikon = document.getElementById("shareIcon");
+    ikon.className = "fa-solid fa-check";
+
+    setTimeout(function() {
+        ikon.className = "fa-solid fa-share-nodes";
+    }, 2000);
 });
