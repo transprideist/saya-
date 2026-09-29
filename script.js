@@ -107,28 +107,34 @@ if (shareBtn) {
             });
         }
 
-        // Genişliği 1600 yapıp dikey oranı koruyarak geniş bir tuval oluşturuyoruz (Tek satıra taşma yapmasın diye)
+        // Tam Dikey Story Boyutu (1080x1920)
         var canvas = document.createElement("canvas");
-        canvas.width = 1600;
-        canvas.height = 2844; // Yaklaşık 9:16 oranı
+        canvas.width = 1080;
+        canvas.height = 1920;
         var ctx = canvas.getContext("2d");
 
-        // Arka plan tam beyaz
+        // Arka planı bembeyaz yapıyoruz
         ctx.fillStyle = "#ffffff";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        ctx.fillStyle = "#000000";
-        // Tek satırın rahatça sığması için font boyutu ve genişlik optimize edildi
-        ctx.font = "bold 56px Montserrat, sans-serif";
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
 
         var tarihMetni = gun + " " + dil.gun + " " + saat + " " + dil.saat + " " + dakika + " " + dil.dakika + " " + saniye + " " + dil.saniye;
-        
-        // Dikey tuvalin ortasında tek satır olarak konumlandırma
+
+        // Metnin uzunluğuna göre font boyutunu dinamik ayarlayarak kayma/taşmayı önlüyoruz
+        var fontSize = 42;
+        if (tarihMetni.length > 30) {
+            fontSize = 36; // İngilizce gibi uzun metinlerde otomatik küçülür, böylece asla taşmaz!
+        }
+
+        // 1. Satır: Sayaç Rakamları ve Yazıları
+        ctx.fillStyle = "#000000";
+        ctx.font = "bold " + fontSize + "px Montserrat, sans-serif";
         ctx.fillText(tarihMetni, canvas.width / 2, canvas.height / 2 - 40);
 
-        ctx.font = "400 38px Montserrat, sans-serif";
+        // 2. Satır: Alt Açıklama Metni
+        ctx.font = "400 32px Montserrat, sans-serif";
         ctx.fillStyle = "#333333";
         ctx.fillText(dil.metin, canvas.width / 2, canvas.height / 2 + 50);
 
