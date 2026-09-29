@@ -41,12 +41,12 @@ function ekranlariAyarla() {
     var counterScreen = document.getElementById("counterScreen");
 
     if (diller[hash]) {
-        selectScreen.style.display = "none";
-        counterScreen.style.display = "flex";
+        if (selectScreen) selectScreen.style.display = "none";
+        if (counterScreen) counterScreen.style.display = "flex";
         guncelle();
     } else {
-        selectScreen.style.display = "flex";
-        counterScreen.style.display = "none";
+        if (selectScreen) selectScreen.style.display = "flex";
+        if (counterScreen) counterScreen.style.display = "none";
     }
 }
 
@@ -55,13 +55,17 @@ function guncelle() {
     if (!diller[hash]) return;
     
     var dil = diller[hash];
-    document.getElementById("subheader").innerText = dil.metin;
+    var subheaderEl = document.getElementById("subheader");
+    if (subheaderEl) subheaderEl.innerText = dil.metin;
 
     var simdi = new Date().getTime();
     var fark = simdi - baslangic;
+    var tarihEl = document.getElementById("tarih");
+
+    if (!tarihEl) return;
 
     if (fark < 0) {
-        document.getElementById("tarih").innerText = "0 " + dil.gun + " 0 " + dil.saat + " 0 " + dil.dakika + " 0 " + dil.saniye;
+        tarihEl.innerText = "0 " + dil.gun + " 0 " + dil.saat + " 0 " + dil.dakika + " 0 " + dil.saniye;
         return;
     }
 
@@ -70,7 +74,7 @@ function guncelle() {
     var dakika = Math.floor((fark % (1000 * 60 * 60)) / (1000 * 60));
     var saniye = Math.floor((fark % (1000 * 60)) / 1000);
 
-    document.getElementById("tarih").innerText = gun + " " + dil.gun + " " + saat + " " + dil.saat + " " + dakika + " " + dil.dakika + " " + saniye + " " + dil.saniye;
+    tarihEl.innerText = gun + " " + dil.gun + " " + saat + " " + dil.saat + " " + dakika + " " + dil.dakika + " " + saniye + " " + dil.saniye;
 }
 
 setInterval(function() {
@@ -83,54 +87,99 @@ setInterval(function() {
 window.addEventListener("hashchange", ekranlariAyarla);
 window.addEventListener("DOMContentLoaded", ekranlariAyarla);
 
-document.getElementById("shareBtn").addEventListener("click", function() {
-    var hash = window.location.hash.replace("#", "").toLowerCase();
-    var dil = diller[hash] || diller["tr"];
+var shareBtn = document.getElementById("shareBtn");
+if (shareBtn) {
+    shareBtn.addEventListener("click", function() {
+        var hash = window.location.hash.replace("#", "").toLowerCase();
+        var dil = diller[hash] || diller["tr"];
 
-    var fark = new Date().getTime() - baslangic;
-    var gun = Math.floor(fark / (1000 * 60 * 60 * 24));
-    var saat = Math.floor((fark % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    var dakika = Math.floor((fark % (1000 * 60 * 60)) / (1000 * 60));
-    var saniye = Math.floor((fark % (1000 * 60)) / 1000);
+        var fark = new Date().getTime() - baslangic;
+        var gun = Math.floor(fark / (1000 * 60 * 60 * 24));
+        var saat = Math.floor((fark % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        var dakika = Math.floor((fark % (1000 * 60 * 60)) / (1000 * 60));
+        var saniye = Math.floor((fark % (1000 * 60)) / 1000);
 
-    var paylasimMetni = gun + " " + dil.gun + " " + saat + " " + dil.saat + " " + dakika + " " + dil.dakika + " " + saniye + " " + dil.ek + "\ntransprideistanbul.com/sayac/#" + hash;
+        var paylasimMetni = gun + " " + dil.gun + " " + saat + " " + dil.saat + " " + dakika + " " + dil.dakika + " " + saniye + " " + dil.ek + "\ntransprideistanbul.com/sayac/#" + hash;
 
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(paylasimMetni);
-    }
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(paylasimMetni).catch(function(err) {
+                console.log("Panoya kopyalanamadı:", err);
+            });
+        }
 
-    var canvas = document.createElement("canvas");
-    canvas.width = 1200;
-    canvas.height = 800;
-    var ctx = canvas.getContext("2d");
+        var canvas = document.createElement("canvas");
+        canvas.width = 1200;
+        canvas.height = 800;
+        var ctx = canvas.getContext("2d");
 
-    ctx.fillStyle = "#ffffff";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = "#ffffff";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    ctx.fillStyle = "#000000";
-    ctx.font = "bold 64px Montserrat, sans-serif";
-    ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
+        ctx.fillStyle = "#000000";
+        ctx.font = "bold 64px Montserrat, sans-serif";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
 
-    var tarihMetni = gun + " " + dil.gun + " " + saat + " " + dil.saat + " " + dakika + " " + dil.dakika + " " + saniye + " " + dil.saniye;
-    ctx.fillText(tarihMetni, canvas.width / 2, canvas.height / 2 - 40);
+        var tarihMetni = gun + " " + dil.gun + " " + saat + " " + dil.saat + " " + dakika + " " + dil.dakika + " " + saniye + " " + dil.saniye;
+        ctx.fillText(tarihMetni, canvas.width / 2, canvas.height / 2 - 40);
 
-    ctx.font = "400 40px Montserrat, sans-serif";
-    ctx.fillStyle = "#333333";
-    ctx.fillText(dil.metin, canvas.width / 2, canvas.height / 2 + 50);
+        ctx.font = "400 40px Montserrat, sans-serif";
+        ctx.fillStyle = "#333333";
+        ctx.fillText(dil.metin, canvas.width / 2, canvas.height / 2 + 50);
 
-    var imageUrl = canvas.toDataURL("image/jpeg", 0.95);
+        var imageUrl = canvas.toDataURL("image/jpeg", 0.95);
 
-    var link = document.createElement("a");
-    link.download = "uzagiz-sayac.jpg";
-    link.href = imageUrl;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+        // Instagram in-app browser kontrolü
+        var isInstagram = /Instagram/.test(navigator.userAgent);
 
-    var ikon = document.getElementById("shareIcon");
-    ikon.className = "fa-solid fa-check";
-    setTimeout(function() {
-        ikon.className = "fa-solid fa-share-nodes";
-    }, 2000);
-});
+        if (isInstagram) {
+            gorselModalGoster(imageUrl, dil);
+        } else {
+            // Normal tarayıcılar (Safari, Chrome vb.) için doğrudan indirme akışı
+            var link = document.createElement("a");
+            link.download = "uzagiz-sayac.jpg";
+            link.href = imageUrl;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        var ikon = document.getElementById("shareIcon");
+        if (ikon) {
+            ikon.className = "fa-solid fa-check";
+            setTimeout(function() {
+                ikon.className = "fa-solid fa-share-nodes";
+            }, 2000);
+        }
+    });
+}
+
+function gorselModalGoster(imageUrl, dil) {
+    var eskiModal = document.getElementById("igModal");
+    if (eskiModal) eskiModal.remove();
+
+    var modal = document.createElement("div");
+    modal.id = "igModal";
+    modal.style.cssText = "position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;box-sizing:border-box;";
+
+    var aciklama = document.createElement("p");
+    aciklama.style.cssText = "color:#ffffff;font-family:Montserrat,sans-serif;font-size:15px;text-align:center;margin-bottom:15px;line-height:1.4;max-width:320px;";
+    aciklama.innerText = "Görseli kaydetmek için üzerine basılı tutun ve 'Resmi Kaydet' / 'Fotoğraflara Ekle' seçeneğini seçin.";
+
+    var img = document.createElement("img");
+    img.src = imageUrl;
+    img.style.cssText = "max-width:100%;max-height:65vh;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,0.5);object-fit:contain;";
+
+    var kapatBtn = document.createElement("button");
+    kapatBtn.innerText = "✕ Kapat";
+    kapatBtn.style.cssText = "margin-top:20px;padding:12px 28px;background:#ffffff;color:#000000;border:none;border-radius:30px;font-weight:bold;font-size:16px;font-family:Montserrat,sans-serif;cursor:pointer;";
+    
+    kapatBtn.onclick = function() {
+        modal.remove();
+    };
+
+    modal.appendChild(aciklama);
+    modal.appendChild(img);
+    modal.appendChild(kapatBtn);
+    document.body.appendChild(modal);
+}
