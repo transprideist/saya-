@@ -7,7 +7,9 @@ var diller = {
         dakika: "DAKİKA",
         saniye: "SANİYE",
         metin: "ARKADAŞLARIMIZDAN UZAĞIZ",
-        ek: "SANİYEDİR ARKADAŞLARIMIZDAN UZAĞIZ!"
+        ek: "SANİYEDİR ARKADAŞLARIMIZDAN UZAĞIZ!",
+        modalAciklama: "Görselin üzerine uzun basılı tutup fotoğraflarına kaydedebilir ve Instagram hikayende paylaşabilirsin! (Paylaşım metni panoya kopyalandı ✨)",
+        kapatBtn: "Tamam / Kapat"
     },
     en: {
         gun: "DAYS",
@@ -15,7 +17,9 @@ var diller = {
         dakika: "MINUTES",
         saniye: "SECONDS",
         metin: "AWAY FROM OUR FRIENDS",
-        ek: "SECONDS AWAY FROM OUR FRIENDS!"
+        ek: "SECONDS AWAY FROM OUR FRIENDS!",
+        modalAciklama: "Press and hold the image to save it to your photos and share it on your Instagram story! (Share text copied to clipboard ✨)",
+        kapatBtn: "Done / Close"
     },
     ku: {
         gun: "ROJ",
@@ -23,7 +27,9 @@ var diller = {
         dakika: "XULEK",
         saniye: "ÇIRKE",
         metin: "EM JI HEVALÊN XWE DÛR IN",
-        ek: "ÇIRKE EM JI HEVALÊN XWE DÛR IN!"
+        ek: "ÇIRKE EM JI HEVALÊN XWE DÛR IN!",
+        modalAciklama: "Ji bo wêne tomar bikin li ser wê bitikînin û li çîroka xwe ya Instagramê parve bikin! (Nivîsa parvekirinê hate kopîkirin ✨)",
+        kapatBtn: "Temam / Bigire"
     },
     ar: {
         gun: "يوم",
@@ -31,7 +37,9 @@ var diller = {
         dakika: "دقيقة",
         saniye: "ثانية",
         metin: "بعيدون عن أصدقائنا",
-        ek: "ثانية بعيدون عن أصدقائنا!"
+        ek: "ثانية بعيدون عن أصدقائنا!",
+        modalAciklama: "اضغط مطولاً على الصورة لحفظها في صورك ومشاركتها في قصتك على إنستغرام! (تم نسخ نص المشاركة ✨)",
+        kapatBtn: "تم / إغلاق"
     }
 };
 
@@ -122,18 +130,18 @@ if (shareBtn) {
 
         var tarihMetni = gun + " " + dil.gun + " " + saat + " " + dil.saat + " " + dakika + " " + dil.dakika + " " + saniye + " " + dil.saniye;
 
-        // Metnin uzunluğuna göre font boyutunu dinamik ayarlayarak kayma/taşmayı önlüyoruz
+        // Metin uzunluğuna göre dinamik font boyutu (taşmayı önlemek için)
         var fontSize = 42;
         if (tarihMetni.length > 30) {
-            fontSize = 36; // İngilizce gibi uzun metinlerde otomatik küçülür, böylece asla taşmaz!
+            fontSize = 36;
         }
 
-        // 1. Satır: Sayaç Rakamları ve Yazıları
+        // 1. Satır: Sayaç Rakamları
         ctx.fillStyle = "#000000";
         ctx.font = "bold " + fontSize + "px Montserrat, sans-serif";
         ctx.fillText(tarihMetni, canvas.width / 2, canvas.height / 2 - 40);
 
-        // 2. Satır: Alt Açıklama Metni
+        // 2. Satır: Açıklama Metni
         ctx.font = "400 32px Montserrat, sans-serif";
         ctx.fillStyle = "#333333";
         ctx.fillText(dil.metin, canvas.width / 2, canvas.height / 2 + 50);
@@ -143,7 +151,7 @@ if (shareBtn) {
         var isInstagram = /Instagram/.test(navigator.userAgent);
 
         if (isInstagram) {
-            gorselModalGoster(imageUrl);
+            gorselModalGoster(imageUrl, dil);
         } else {
             var link = document.createElement("a");
             link.download = "uzagiz-sayac.jpg";
@@ -163,7 +171,7 @@ if (shareBtn) {
     });
 }
 
-function gorselModalGoster(imageUrl) {
+function gorselModalGoster(imageUrl, dil) {
     var eskiModal = document.getElementById("igModal");
     if (eskiModal) eskiModal.remove();
 
@@ -173,14 +181,14 @@ function gorselModalGoster(imageUrl) {
 
     var aciklama = document.createElement("p");
     aciklama.style.cssText = "color:#ffffff;font-family:Montserrat,sans-serif;font-size:14px;text-align:center;margin-bottom:15px;line-height:1.5;max-width:320px;";
-    aciklama.innerText = "Görselin üzerine uzun basılı tutup fotoğraflarına kaydedebilir ve Instagram hikayende paylaşabilirsin! (Paylaşım metni panoya kopyalandı ✨)";
+    aciklama.innerText = dil.modalAciklama; // Aktif dildeki açıklama yazısı
 
     var img = document.createElement("img");
     img.src = imageUrl;
     img.style.cssText = "max-width:100%;max-height:60vh;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,0.5);object-fit:contain;margin-bottom:20px;-webkit-touch-callout:default !important;";
 
     var kapatBtn = document.createElement("button");
-    kapatBtn.innerText = "Tamam / Kapat";
+    kapatBtn.innerText = dil.kapatBtn; // Aktif dildeki kapat butonu
     kapatBtn.style.cssText = "padding:12px 28px;background:#ffffff;color:#000000;border:none;border-radius:30px;font-weight:bold;font-size:15px;font-family:Montserrat,sans-serif;cursor:pointer;";
     
     kapatBtn.onclick = function() {
