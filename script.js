@@ -34,16 +34,12 @@ document.getElementById("shareBtn").addEventListener("click", function() {
     textarea.value = paylasimMetni;
     document.body.appendChild(textarea);
     textarea.select();
-    
-    try {
-        document.execCommand('copy');
-    } catch (err) {}
-    
+    document.execCommand('copy');
     document.body.removeChild(textarea);
 
     if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(paylasimMetni).catch(function() {});
+        navigator.clipboard.writeText(paylasimMetni);
     }
 
-    document.getElementById("copyMessage").classList.add("active");
+    document.getElementById("copyMessage").classList.add("goster");
 });
