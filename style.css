@@ -82,7 +82,6 @@ body {
 
 .copy-message {
     opacity: 0;
-    visibility: hidden;
     margin-top: 15px;
     font-size: 11px;
     font-weight: 600;
@@ -91,7 +90,6 @@ body {
     transition: opacity 0.4s ease;
 }
 
-.copy-message.active {
+.copy-message.goster {
     opacity: 1;
-    visibility: visible;
 }
