@@ -21,7 +21,7 @@ setInterval(function() {
         saniye + " <i class='fa-solid fa-stopwatch'></i>"; 
 }, 1000);
 
-document.getElementById("shareBtn").addEventListener("click", function() {
+document.getElementById("shareBtn").addEventListener("click", async function() {
     var gun = Math.floor((new Date().getTime() - baslangic) / (1000 * 60 * 60 * 24));
     var saat = Math.floor(((new Date().getTime() - baslangic) % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
     var dakika = Math.floor(((new Date().getTime() - baslangic) % (1000 * 60 * 60)) / (1000 * 60));
@@ -30,17 +30,17 @@ document.getElementById("shareBtn").addEventListener("click", function() {
     var temizMetin = gun + " GÜN " + saat + " SAAT " + dakika + " DAKİKA " + saniye + " SANİYEDİR";
     var paylasimMetni = temizMetin + " UZAĞIZ! / AWAY FROM OUR FRIENDS! / بعيدون عن أصدقائنا\ntransprideistanbul.com/sayac";
 
-    navigator.clipboard.writeText(paylasimMetni);
-
-    var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-
-    if (isMobile) {
-        window.location.href = "instagram://app";
-        
-        setTimeout(function() {
-            window.location.href = "https://instagram.com";
-        }, 1000);
+    if (navigator.share) {
+        try {
+            await navigator.share({
+                text: paylasimMetni,
+                url: 'https://transprideistanbul.com/sayac'
+            });
+        } catch (error) {
+            console.log('Paylaşım iptal edildi');
+        }
     } else {
-        alert("Metin panoya kopyalandı! Instagram açık değilken buradayız.");
+        navigator.clipboard.writeText(paylasimMetni);
+        alert("Bağlantı kopyalandı!");
     }
 });
