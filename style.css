@@ -80,3 +80,11 @@ body {
     transform: scale(1.05);
 }
 
+.copy-message {
+    display: none;
+    margin-top: 15px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    color: #333333;
+}
