@@ -41,12 +41,10 @@ function ekranlariAyarla() {
     var counterScreen = document.getElementById("counterScreen");
 
     if (diller[hash]) {
-        // Dil seçilmişse sayaç ekranını aç, seçim ekranını gizle
         selectScreen.style.display = "none";
         counterScreen.style.display = "flex";
         guncelle();
     } else {
-        // Dil seçilmemişse (ilk giriş) sadece dil seçim ekranını göster
         selectScreen.style.display = "flex";
         counterScreen.style.display = "none";
     }
@@ -97,13 +95,38 @@ document.getElementById("shareBtn").addEventListener("click", function() {
 
     var paylasimMetni = gun + " " + dil.gun + " " + saat + " " + dil.saat + " " + dakika + " " + dil.dakika + " " + saniye + " " + dil.ek + "\ntransprideistanbul.com/sayac/#" + hash;
 
+    // Metni panoya kopyala
     if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(paylasimMetni).then(function() {
+        navigator.clipboard.writeText(paylasimMetni);
+    }
+
+    // Sayaç alanının ekran görüntüsünü (canvas) alıp paylaşmayı dene
+    var captureElement = document.getElementById("captureArea");
+    html2canvas(captureElement, { backgroundColor: null, scale: 2 }).then(function(canvas) {
+        canvas.toBlob(function(blob) {
+            var file = new File([blob], "uzagiz-sayac.png", { type: "image/png" });
+
+            // Tarayıcı destekliyorsa doğrudan native paylaşım menüsünü (Instagram Story, WhatsApp vb.) tetikle
+            if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                navigator.share({
+                    files: [file],
+                    title: 'Sayaç',
+                    text: paylasimMetni
+                }).catch(function() {});
+            } else {
+                // Desteklemiyorsa görseli kullanıcıya direkt indir
+                var link = document.createElement("a");
+                link.download = "uzagiz-sayac.png";
+                link.href = canvas.toDataURL("image/png");
+                link.click();
+            }
+
+            // İkonu tik işaretine çevir
             var ikon = document.getElementById("shareIcon");
             ikon.className = "fa-solid fa-check";
             setTimeout(function() {
                 ikon.className = "fa-solid fa-share-nodes";
             }, 2000);
         });
-    }
+    });
 });
